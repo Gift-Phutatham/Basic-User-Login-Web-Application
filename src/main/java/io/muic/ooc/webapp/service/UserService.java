@@ -4,12 +4,15 @@ import io.muic.ooc.webapp.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserService {
 
     private DatabaseConnectionService databaseConnectionService;
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
-    private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?";
+    private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
 
     public void setDatabaseConnectionService(DatabaseConnectionService databaseConnectionService) {
         this.databaseConnectionService = databaseConnectionService;
@@ -57,14 +60,37 @@ public class UserService {
                     resultSet.getString("display_name")
             );
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
             return null;
         }
     }
 
     /**
+     * List all users in the database.
+     *
+     * @return list of users, never return null.
+     */
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        try {
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_SQL);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                users.add(new User(
+                        resultSet.getLong("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("display_name")
+                ));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return users;
+    }
+
+    /**
      * Delete user.
-     * List all users.
      * Update user by user id.
      */
 
