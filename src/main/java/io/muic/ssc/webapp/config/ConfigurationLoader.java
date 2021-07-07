@@ -5,8 +5,10 @@ import java.util.Properties;
 
 public class ConfigurationLoader {
 
-    /* Added static method for loading configuration from disk
-     * Default location is 'config.properties' in the same folder */
+    /**
+     * Added static method for loading configuration from disk
+     * Default location is 'config.properties' in the same folder
+     */
     public static ConfigProperties load() {
         try (FileInputStream fin = new FileInputStream("config.properties")) {
             Properties prop = new Properties();

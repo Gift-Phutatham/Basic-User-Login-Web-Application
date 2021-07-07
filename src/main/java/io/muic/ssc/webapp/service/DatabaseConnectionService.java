@@ -10,6 +10,10 @@ import java.sql.SQLException;
 public class DatabaseConnectionService {
     private final HikariDataSource ds;
 
+    /**
+     * Database connection pool using hikari library.
+     * The secret and variables and loaded from disk.
+     */
     public DatabaseConnectionService() {
         ds = new HikariDataSource();
         ds.setMaximumPoolSize(20);
@@ -27,24 +31,5 @@ public class DatabaseConnectionService {
     public Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
-
-//    public static void main(String[] args) {
-//        try {
-//            Connection connection = ds.getConnection();
-//            String sql = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
-//            PreparedStatement ps = connection.prepareStatement(sql);
-//            /* Setting username column 1 */
-//            ps.setString(1, "my_username");
-//            /* Setting password column 2 */
-//            ps.setString(2, "my_password");
-//            /* Setting display name column 3 */
-//            ps.setString(3, "my_display_name");
-//            ps.executeUpdate();
-//            /* So need to be manually commit the change */
-//            connection.commit();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }
