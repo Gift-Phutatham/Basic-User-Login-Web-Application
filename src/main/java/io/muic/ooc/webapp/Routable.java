@@ -1,11 +1,10 @@
-package io.muic.ssc.webapp;
+package io.muic.ooc.webapp;
 
-import io.muic.ssc.webapp.service.SecurityService;
+import io.muic.ooc.webapp.service.SecurityService;
 
 public interface Routable {
 
     String getMapping();
 
     void setSecurityService(SecurityService securityService);
-
 }

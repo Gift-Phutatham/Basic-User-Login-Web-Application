@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.muic.ssc.webapp</groupId>
+    <groupId>io.muic.ooc.webapp</groupId>
     <artifactId>login-webapp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Login Webapp</name>
@@ -55,14 +55,19 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
     <build>
@@ -75,7 +80,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>io.muic.ssc.webapp.Webapp</mainClass>
+                            <mainClass>io.muic.ooc.webapp.Webapp</mainClass>
                             <name>webapp</name>
                         </program>
                     </programs>

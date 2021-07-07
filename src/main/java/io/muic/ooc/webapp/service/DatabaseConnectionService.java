@@ -1,18 +1,19 @@
-package io.muic.ssc.webapp.service;
+package io.muic.ooc.webapp.service;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.muic.ssc.webapp.config.ConfigProperties;
-import io.muic.ssc.webapp.config.ConfigurationLoader;
+import io.muic.ooc.webapp.config.ConfigProperties;
+import io.muic.ooc.webapp.config.ConfigurationLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DatabaseConnectionService {
+
     private final HikariDataSource ds;
 
     /**
      * Database connection pool using hikari library.
-     * The secret and variables and loaded from disk.
+     * The secret and variables are loaded from disk.
      */
     public DatabaseConnectionService() {
         ds = new HikariDataSource();
