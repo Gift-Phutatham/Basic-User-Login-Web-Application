@@ -17,6 +17,7 @@ public class UserService {
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
+    private static final String DELETE_USER_SQL = "DELETE FROM tbl_user WHERE username = ?;";
 
     private UserService() {
     }
@@ -84,7 +85,7 @@ public class UserService {
     /**
      * List all users in the database.
      *
-     * @return list of users, never return null.
+     * @return list of users, never return null
      */
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -109,9 +110,21 @@ public class UserService {
 
     /**
      * Delete user.
+     *
+     * @return true if successful
      */
-    public void deleteUserByUsername() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public boolean deleteUserByUsername(String username) {
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(DELETE_USER_SQL);
+        ) {
+            ps.setString(1, username);
+            int deleteCount = ps.executeUpdate();
+            connection.commit();
+            return deleteCount > 0;
+        } catch (SQLException throwables) {
+            return false;
+        }
     }
 
     /**
