@@ -15,10 +15,9 @@ public class LogoutServlet extends HttpServlet implements Routable {
     private SecurityService securityService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         securityService.logout(request);
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/login.jsp");
-        rd.include(request, response);
+        response.sendRedirect("/login");
     }
 
     @Override
