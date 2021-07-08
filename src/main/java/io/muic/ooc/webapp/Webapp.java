@@ -3,7 +3,9 @@ package io.muic.ooc.webapp;
 import java.io.File;
 import javax.servlet.ServletException;
 
+import io.muic.ooc.webapp.service.DatabaseConnectionService;
 import io.muic.ooc.webapp.service.SecurityService;
+import io.muic.ooc.webapp.service.UserService;
 import io.muic.ooc.webapp.servlet.HomeServlet;
 import io.muic.ooc.webapp.servlet.LoginServlet;
 import org.apache.catalina.Context;
@@ -20,6 +22,8 @@ public class Webapp {
         tomcat.setPort(8082);
 
         SecurityService securityService = new SecurityService();
+        securityService.setUserService(UserService.getInstance());
+
         ServletRouter servletRouter = new ServletRouter();
         servletRouter.setSecurityService(securityService);
 

@@ -7,15 +7,19 @@ import io.muic.ooc.webapp.config.ConfigurationLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * We will make this singleton too.
+ */
 public class DatabaseConnectionService {
 
     private final HikariDataSource ds;
+    private static DatabaseConnectionService service;
 
     /**
      * Database connection pool using hikari library.
      * The secret and variables are loaded from disk.
      */
-    public DatabaseConnectionService() {
+    private DatabaseConnectionService() {
         ds = new HikariDataSource();
         ds.setMaximumPoolSize(20);
         ConfigProperties configProperties = ConfigurationLoader.load();
@@ -31,6 +35,13 @@ public class DatabaseConnectionService {
 
     public Connection getConnection() throws SQLException {
         return ds.getConnection();
+    }
+
+    public static DatabaseConnectionService getInstance() {
+        if (service == null) {
+            service = new DatabaseConnectionService();
+        }
+        return service;
     }
 
 }

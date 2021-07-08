@@ -7,12 +7,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UserService is used in too many places and we only need one instance of it so we will make it singleton.
+ */
 public class UserService {
 
+    private static UserService service;
     private DatabaseConnectionService databaseConnectionService;
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
+
+    private UserService() {
+    }
+
+    public static UserService getInstance() {
+        if (service == null) {
+            service = new UserService();
+            service.setDatabaseConnectionService(DatabaseConnectionService.getInstance());
+        }
+        return service;
+    }
 
     public void setDatabaseConnectionService(DatabaseConnectionService databaseConnectionService) {
         this.databaseConnectionService = databaseConnectionService;
@@ -66,7 +81,6 @@ public class UserService {
 
     /**
      * List all users in the database.
-     *
      * @return list of users, never return null.
      */
     public List<User> findAll() {
@@ -116,12 +130,16 @@ public class UserService {
     }
 
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        userService.setDatabaseConnectionService(new DatabaseConnectionService());
-        List<User> users = userService.findAll();
-        for (User user : users) {
-            System.out.println(user.getUsername());
+        UserService userService = UserService.getInstance();
+        try {
+            userService.createUser("admin", "123456", "Admin");
+        } catch (UserServiceException e) {
+            e.printStackTrace();
         }
+//        List<User> users = userService.findAll();
+//        for (User user : users) {
+//            System.out.println(user.getUsername());
+//        }
     }
 
 }
