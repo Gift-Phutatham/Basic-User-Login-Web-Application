@@ -37,9 +37,10 @@ public class UserService {
      * Create new user.
      */
     public void createUser(String username, String password, String displayName) throws UserServiceException {
-        try {
-            Connection connection = databaseConnectionService.getConnection();
-            PreparedStatement ps = connection.prepareStatement(INSERT_USER_SQL);
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(INSERT_USER_SQL);
+        ) {
             /* Setting username column 1. */
             ps.setString(1, username);
             /* Setting password column 2. */
@@ -61,9 +62,10 @@ public class UserService {
      * Find user by username.
      */
     public User findByUsername(String username) {
-        try {
-            Connection connection = databaseConnectionService.getConnection();
-            PreparedStatement ps = connection.prepareStatement(SELECT_USER_SQL);
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(SELECT_USER_SQL);
+        ) {
             ps.setString(1, username);
             ResultSet resultSet = ps.executeQuery();
             resultSet.next();
@@ -81,13 +83,15 @@ public class UserService {
 
     /**
      * List all users in the database.
+     *
      * @return list of users, never return null.
      */
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        try {
-            Connection connection = databaseConnectionService.getConnection();
-            PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_SQL);
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_SQL);
+        ) {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 users.add(new User(
@@ -113,6 +117,7 @@ public class UserService {
     /**
      * Update user by user id.
      * Users can only change their display name when updating profile.
+     *
      * @param id
      * @param displayName
      */
@@ -123,6 +128,7 @@ public class UserService {
     /**
      * Change password method is separated from update user method because
      * user normally never change password and update profile at the same time.
+     *
      * @param newPassword
      */
     public void changePassword(String newPassword) {
