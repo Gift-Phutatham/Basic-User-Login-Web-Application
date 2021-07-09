@@ -55,12 +55,19 @@ public class CreateUserServlet extends HttpServlet implements Routable {
             UserService userService = UserService.getInstance();
             String errorMessage = null;
             // check if username is valid
-            if (userService.findByUsername(username) != null) {
+            if (StringUtils.isBlank(username)) {
+                errorMessage = "Username cannot be blank.";
+            }
+            else if (userService.findByUsername(username) != null) {
                 errorMessage = String.format("Username %s has already been taken.", username);
             }
             // check if displayName is valid
             else if (StringUtils.isBlank(displayName)) {
                 errorMessage = "Display Name cannot be blank.";
+            }
+            // check if password is valid
+            else if (StringUtils.isBlank(password)) {
+                errorMessage = "Password cannot be blank.";
             }
             // check if confirmed password is correct
             else if (!StringUtils.equals(password, cpassword)) {
