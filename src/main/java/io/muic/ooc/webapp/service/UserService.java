@@ -18,9 +18,9 @@ public class UserService {
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
     private static final String DELETE_USER_SQL = "DELETE FROM tbl_user WHERE username = ?;";
+    private static final String UPDATE_USER_SQL = "UPDATE tbl_user SET display_name = ? WHERE username = ?;";
 
-    private UserService() {
-    }
+    private UserService() {}
 
     public static UserService getInstance() {
         if (service == null) {
@@ -131,11 +131,21 @@ public class UserService {
      * Update user by user id.
      * Users can only change their display name when updating profile.
      *
-     * @param id
+     * @param username
      * @param displayName
      */
-    public void updateUserById(long id, String displayName) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void updateUserByUsername(String username, String displayName) throws UserServiceException {
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(UPDATE_USER_SQL);
+        ) {
+            ps.setString(1, displayName);
+            ps.setString(2, username);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException throwables) {
+            throw new UserServiceException(throwables.getMessage());
+        }
     }
 
     /**
@@ -155,10 +165,6 @@ public class UserService {
         } catch (UserServiceException e) {
             e.printStackTrace();
         }
-//        List<User> users = userService.findAll();
-//        for (User user : users) {
-//            System.out.println(user.getUsername());
-//        }
     }
 
 }
