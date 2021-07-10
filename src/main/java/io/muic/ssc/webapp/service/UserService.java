@@ -162,4 +162,13 @@ public class UserService {
             return false;
         }
     }
+
+//    public static void main(String[] args) {
+//        UserService userService = UserService.getInstance();
+//        try {
+//            userService.createUser("admin", "123456", "Admin");
+//        } catch (UserServiceException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

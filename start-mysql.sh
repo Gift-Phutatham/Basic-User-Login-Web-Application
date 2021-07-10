@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker run -p 127.0.0.1:13306:3306 --name mariadb -e MARIADB_ROOT_PASSWORD=securedpassword -d --restart=always mariadb:10
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d -p 5555:3306 mysql
