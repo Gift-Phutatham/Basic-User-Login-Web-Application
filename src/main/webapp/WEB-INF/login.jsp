@@ -8,12 +8,12 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="bg-dark">
 <div class="container">
     <div class="row justify-content-md-center h-100">
         <div class="col-sm-12 col-md-6 col-lg-4 my-auto">
-            <h2>Login</h2>
-            <p>${error}</p>
+            <h2 class="text-light">Login</h2>
+            <p class="text-danger">${error}</p>
             <form action="/login" method="post">
                 <div class="input-group mb-4 input-group-md">
                     <span class="input-group-text" id="username" style="width: 40px">
