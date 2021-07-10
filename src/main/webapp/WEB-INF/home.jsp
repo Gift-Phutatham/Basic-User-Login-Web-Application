@@ -70,10 +70,16 @@
                         <td class="py-3">${user.username}</td>
                         <td class="py-3">${user.displayName}</td>
                         <td class="align-middle">
-                            <a class="btn btn-warning btn-sm" type="button" href="/user/edit?username=${user.username}"><i
-                                    class="fa fa-pencil"></i></a>
-                            <a class="btn btn-info btn-sm" type="button" href="/user/password?username=${user.username}"><i
-                                    class="fa fa-key"></i></a>
+                            <a class="btn btn-warning btn-sm" type="button" href="/user/edit?username=${user.username}">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <!-- Try to prevent user from changing others' password. -->
+                            <c:if test="${currentUser.username == user.username}">
+                                <a class="btn btn-info btn-sm" type="button"
+                                   href="/user/password?username=${user.username}">
+                                    <i class="fa fa-key"></i>
+                                </a>
+                            </c:if>
                             <!-- Try to prevent user from deleting own account. -->
                             <c:if test="${currentUser.username != user.username}">
                                 <!-- Add remove user confirmation to prevent accidental deletion. -->
