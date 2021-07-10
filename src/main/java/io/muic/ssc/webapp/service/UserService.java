@@ -18,7 +18,8 @@ public class UserService {
     private static final String UPDATE_USER_SQL = "UPDATE tbl_user SET display_name = ? WHERE username = ?;";
     private static final String UPDATE_USER_PASSWORD_SQL = "UPDATE tbl_user SET password = ? WHERE username = ?;";
 
-    private UserService() {}
+    private UserService() {
+    }
 
     public static UserService getInstance() {
         if (service == null) {
