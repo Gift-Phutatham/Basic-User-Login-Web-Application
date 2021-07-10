@@ -16,6 +16,7 @@ public class UserService {
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
     private static final String DELETE_USER_SQL = "DELETE FROM tbl_user WHERE username = ?;";
     private static final String UPDATE_USER_SQL = "UPDATE tbl_user SET display_name = ? WHERE username = ?;";
+    private static final String UPDATE_USER_PASSWORD_SQL = "UPDATE tbl_user SET password = ? WHERE username = ?;";
 
     private UserService() {}
 
@@ -125,10 +126,21 @@ public class UserService {
      * Change password method is separated from update user method because
      * user normally never change password and update profile at the same time.
      *
+     * @param username
      * @param newPassword
      */
-    public void changePassword(String newPassword) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void changePassword(String username, String newPassword) throws UserServiceException {
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(UPDATE_USER_PASSWORD_SQL);
+        ) {
+            ps.setString(1, BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+            ps.setString(2, username);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            throw new UserServiceException(e.getMessage());
+        }
     }
 
     /**

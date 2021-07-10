@@ -17,6 +17,7 @@ public class ServletRouter {
         routables.add(HomeServlet.class);
         routables.add(CreateUserServlet.class);
         routables.add(EditUserServlet.class);
+        routables.add(ChangePasswordServlet.class);
         routables.add(DeleteUserServlet.class);
         routables.add(LoginServlet.class);
         routables.add(LogoutServlet.class);
