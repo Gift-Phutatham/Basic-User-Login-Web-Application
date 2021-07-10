@@ -1,6 +1,6 @@
-package io.muic.ooc.webapp;
+package io.muic.ssc.webapp;
 
-import io.muic.ooc.webapp.service.SecurityService;
+import io.muic.ssc.webapp.service.SecurityService;
 
 public interface Routable {
 

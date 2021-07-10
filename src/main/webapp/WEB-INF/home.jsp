@@ -16,7 +16,7 @@
 <div class="container">
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand">SSC - Login Webapp</a>
+            <a class="navbar-brand" href="/">SSC - Login Webapp</a>
             <a class="btn btn-light pull-right" type="button" href="/logout">
                 <i class="fa fa-sign-out"></i> &nbsp; Logout
             </a>
@@ -70,7 +70,8 @@
                         <td class="py-3">${user.username}</td>
                         <td class="py-3">${user.displayName}</td>
                         <td class="align-middle">
-                            <a class="btn btn-warning btn-sm" type="button" href="/user/edit?username=${user.username}"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-warning btn-sm" type="button" href="/user/edit?username=${user.username}"><i
+                                    class="fa fa-pencil"></i></a>
                             <!-- Try to prevent user from deleting own account. -->
                             <c:if test="${currentUser.username != user.username}">
                                 <!-- Add remove user confirmation to prevent accidental deletion. -->
@@ -88,7 +89,8 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Confirm deleting user</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm deleting
+                                                    user</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                             </div>

@@ -1,4 +1,4 @@
-package io.muic.ooc.webapp.model;
+package io.muic.ssc.webapp.model;
 
 public class User {
 

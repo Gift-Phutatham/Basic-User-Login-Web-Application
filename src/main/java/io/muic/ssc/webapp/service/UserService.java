@@ -1,15 +1,12 @@
-package io.muic.ooc.webapp.service;
+package io.muic.ssc.webapp.service;
 
-import io.muic.ooc.webapp.model.User;
+import io.muic.ssc.webapp.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * UserService is used in too many places and we only need one instance of it so we will make it singleton.
- */
 public class UserService {
 
     private static UserService service;
@@ -42,20 +39,16 @@ public class UserService {
                 Connection connection = databaseConnectionService.getConnection();
                 PreparedStatement ps = connection.prepareStatement(INSERT_USER_SQL);
         ) {
-            /* Setting username column 1. */
             ps.setString(1, username);
-            /* Setting password column 2. */
-            /* Password needs to be hashed and salted so bcrypt library is needed. */
+            /* Password needs to be hashed and salted. */
             ps.setString(2, BCrypt.hashpw(password, BCrypt.gensalt()));
-            /* Setting display name column 3. */
             ps.setString(3, displayName);
             ps.executeUpdate();
-            /* So need to be manually commit the change. */
             connection.commit();
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new UsernameNotUniqueException(String.format("Username %s has already been taken.", username));
-        } catch (SQLException throwables) {
-            throw new UserServiceException(throwables.getMessage());
+        } catch (SQLException e) {
+            throw new UserServiceException(e.getMessage());
         }
     }
 
@@ -73,11 +66,10 @@ public class UserService {
             return new User(
                     resultSet.getLong("id"),
                     resultSet.getString("username"),
-                    /* This is hashed password. */
                     resultSet.getString("password"),
                     resultSet.getString("display_name")
             );
-        } catch (SQLException throwables) {
+        } catch (SQLException e) {
             return null;
         }
     }
@@ -85,7 +77,7 @@ public class UserService {
     /**
      * List all users in the database.
      *
-     * @return list of users, never return null
+     * @return list of users, never return null.
      */
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -102,29 +94,10 @@ public class UserService {
                         resultSet.getString("display_name")
                 ));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return users;
-    }
-
-    /**
-     * Delete user.
-     *
-     * @return true if successful
-     */
-    public boolean deleteUserByUsername(String username) {
-        try (
-                Connection connection = databaseConnectionService.getConnection();
-                PreparedStatement ps = connection.prepareStatement(DELETE_USER_SQL);
-        ) {
-            ps.setString(1, username);
-            int deleteCount = ps.executeUpdate();
-            connection.commit();
-            return deleteCount > 0;
-        } catch (SQLException throwables) {
-            return false;
-        }
     }
 
     /**
@@ -143,8 +116,8 @@ public class UserService {
             ps.setString(2, username);
             ps.executeUpdate();
             connection.commit();
-        } catch (SQLException throwables) {
-            throw new UserServiceException(throwables.getMessage());
+        } catch (SQLException e) {
+            throw new UserServiceException(e.getMessage());
         }
     }
 
@@ -158,13 +131,22 @@ public class UserService {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public static void main(String[] args) {
-        UserService userService = UserService.getInstance();
-        try {
-            userService.createUser("admin", "123456", "Admin");
-        } catch (UserServiceException e) {
-            e.printStackTrace();
+    /**
+     * Delete user.
+     *
+     * @return true if successful.
+     */
+    public boolean deleteUserByUsername(String username) {
+        try (
+                Connection connection = databaseConnectionService.getConnection();
+                PreparedStatement ps = connection.prepareStatement(DELETE_USER_SQL);
+        ) {
+            ps.setString(1, username);
+            int deleteCount = ps.executeUpdate();
+            connection.commit();
+            return deleteCount > 0;
+        } catch (SQLException e) {
+            return false;
         }
     }
-
 }

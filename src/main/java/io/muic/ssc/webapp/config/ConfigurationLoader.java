@@ -1,4 +1,4 @@
-package io.muic.ooc.webapp.config;
+package io.muic.ssc.webapp.config;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -7,14 +7,13 @@ public class ConfigurationLoader {
 
     /**
      * Added static method for loading configuration from disk.
-     * Default location is 'config.properties' in the same folder.
+     * Default location is 'config.properties'.
      */
     public static ConfigProperties load() {
-        String configFilename = "config.properties";
-        try (FileInputStream fin = new FileInputStream(configFilename)) {
+        try (FileInputStream fin = new FileInputStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(fin);
-            /* Get the property value and print it out. */
+            /* Get the property value. */
             String driverClassName = prop.getProperty("database.driverClassName");
             String connectionUrl = prop.getProperty("database.connectionUrl");
             String username = prop.getProperty("database.username");
@@ -29,5 +28,4 @@ public class ConfigurationLoader {
             return null;
         }
     }
-
 }

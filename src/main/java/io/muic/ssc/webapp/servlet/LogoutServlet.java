@@ -1,10 +1,8 @@
-package io.muic.ooc.webapp.servlet;
+package io.muic.ssc.webapp.servlet;
 
-import io.muic.ooc.webapp.Routable;
-import io.muic.ooc.webapp.service.SecurityService;
+import io.muic.ssc.webapp.Routable;
+import io.muic.ssc.webapp.service.SecurityService;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,12 +13,6 @@ public class LogoutServlet extends HttpServlet implements Routable {
     private SecurityService securityService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        securityService.logout(request);
-        response.sendRedirect("/login");
-    }
-
-    @Override
     public String getMapping() {
         return "/logout";
     }
@@ -28,5 +20,11 @@ public class LogoutServlet extends HttpServlet implements Routable {
     @Override
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        securityService.logout(request);
+        response.sendRedirect("/login");
     }
 }

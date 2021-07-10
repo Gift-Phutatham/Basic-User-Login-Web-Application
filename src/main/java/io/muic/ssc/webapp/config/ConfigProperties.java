@@ -1,4 +1,4 @@
-package io.muic.ooc.webapp.config;
+package io.muic.ssc.webapp.config;
 
 public class ConfigProperties {
 
@@ -38,5 +38,4 @@ public class ConfigProperties {
     public void setDatabasePassword(String databasePassword) {
         this.databasePassword = databasePassword;
     }
-
 }

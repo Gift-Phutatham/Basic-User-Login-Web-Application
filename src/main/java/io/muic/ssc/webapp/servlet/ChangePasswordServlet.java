@@ -1,4 +1,4 @@
-package io.muic.ooc.webapp.servlet;
+package io.muic.ssc.webapp.servlet;
 
 public class ChangePasswordServlet {
 }

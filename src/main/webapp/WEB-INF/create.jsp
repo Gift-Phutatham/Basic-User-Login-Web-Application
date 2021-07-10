@@ -51,7 +51,8 @@
                     <span class="input-group-text" id="displayName" style="width: 40px">
                         <i class="fa fa-user"></i>
                     </span>
-                    <input type="text" class="form-control" name="displayName" placeholder="Display Name" aria-label="displayName"
+                    <input type="text" class="form-control" name="displayName" placeholder="Display Name"
+                           aria-label="displayName"
                            aria-describedby="displayName" autocomplete="off" value="${displayName}">
                 </div>
                 <div class="input-group mb-4 input-group-md">
@@ -69,7 +70,8 @@
                            aria-label="Password" aria-describedby="cpassword" autocomplete="off" value="${cpassword}">
                 </div>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> &nbsp; Create New User</button>
+                    <button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> &nbsp; Create New User
+                    </button>
                 </div>
             </form>
         </div>

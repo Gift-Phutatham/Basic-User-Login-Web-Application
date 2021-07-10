@@ -1,8 +1,9 @@
-package io.muic.ooc.webapp.servlet;
+package io.muic.ssc.webapp.servlet;
 
-import io.muic.ooc.webapp.Routable;
-import io.muic.ooc.webapp.service.SecurityService;
-import io.muic.ooc.webapp.service.UserService;
+import io.muic.ssc.webapp.Routable;
+import io.muic.ssc.webapp.model.User;
+import io.muic.ssc.webapp.service.SecurityService;
+import io.muic.ssc.webapp.service.UserService;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -12,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CreateUserServlet extends HttpServlet implements Routable {
+public class EditUserServlet extends HttpServlet implements Routable {
 
     private SecurityService securityService;
 
     @Override
     public String getMapping() {
-        return "/user/create";
+        return "/user/edit";
     }
 
     @Override
@@ -28,9 +29,17 @@ public class CreateUserServlet extends HttpServlet implements Routable {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        boolean authorized = securityService.isAuthorized(request);
-        if (authorized) {
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
+        if (securityService.isAuthorized(request)) {
+            String username = StringUtils.trim(request.getParameter("username")); /* From query part. */
+            UserService userService = UserService.getInstance();
+
+            /* Prefill the form. */
+            User user = userService.findByUsername(username);
+            request.setAttribute("user", user);
+            request.setAttribute("username", user.getUsername());
+            request.setAttribute("displayName", user.getDisplayName());
+
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/edit.jsp");
             rd.include(request, response);
             request.getSession().removeAttribute("hasError");
             request.getSession().removeAttribute("message");
@@ -43,47 +52,33 @@ public class CreateUserServlet extends HttpServlet implements Routable {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        boolean authorized = securityService.isAuthorized(request);
-        if (authorized) {
-
-            // ensure that username and displayName do not contain leading and trailing spaces
-            String username = StringUtils.trim((String) request.getParameter("username"));
-            String displayName = StringUtils.trim((String) request.getParameter("displayName"));
-            String password = (String) request.getParameter("password");
-            String cpassword = (String) request.getParameter("cpassword");
+        if (securityService.isAuthorized(request)) {
+            /* Edit user is similar to create user but we only allow editing display name. */
+            /* Ensure that username and displayName do not contain leading and trailing spaces. */
+            String username = StringUtils.trim(request.getParameter("username")); /* From query part. */
+            String displayName = StringUtils.trim(request.getParameter("displayName"));
 
             UserService userService = UserService.getInstance();
+            User user = userService.findByUsername(username);
             String errorMessage = null;
-            // check if username is valid
-            if (StringUtils.isBlank(username)) {
-                errorMessage = "Username cannot be blank.";
+            /* Check if exists. */
+            if (user == null) {
+                errorMessage = String.format("User %s does not exist.", username);
             }
-            else if (userService.findByUsername(username) != null) {
-                errorMessage = String.format("Username %s has already been taken.", username);
-            }
-            // check if displayName is valid
+            /* Check if displayName is valid. */
             else if (StringUtils.isBlank(displayName)) {
                 errorMessage = "Display Name cannot be blank.";
-            }
-            // check if password is valid
-            else if (StringUtils.isBlank(password)) {
-                errorMessage = "Password cannot be blank.";
-            }
-            // check if confirmed password is correct
-            else if (!StringUtils.equals(password, cpassword)) {
-                errorMessage = "Confirmed password mismatches.";
             }
 
             if (errorMessage != null) {
                 request.getSession().setAttribute("hasError", true);
                 request.getSession().setAttribute("message", errorMessage);
             } else {
-                // create a user
+                /* Edit a user. */
                 try {
-                    userService.createUser(username, password, displayName);
-                    // if no error redirect
+                    userService.updateUserByUsername(username, displayName);
                     request.getSession().setAttribute("hasError", false);
-                    request.getSession().setAttribute("message", String.format("User %s has been created successfully.", username));
+                    request.getSession().setAttribute("message", String.format("User %s has been updated successfully.", username));
                     response.sendRedirect("/");
                     return;
                 } catch (Exception e) {
@@ -92,23 +87,18 @@ public class CreateUserServlet extends HttpServlet implements Routable {
                 }
             }
 
-            // prefill the form
+            /* Prefill the form. */
             request.setAttribute("username", username);
             request.setAttribute("displayName", displayName);
-            request.setAttribute("password", password);
-            request.setAttribute("cpassword", cpassword);
 
-            // if not success, it will arrive here
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/edit.jsp");
             rd.include(request, response);
             request.getSession().removeAttribute("hasError");
             request.getSession().removeAttribute("message");
-
         } else {
             request.removeAttribute("hasError");
             request.removeAttribute("message");
             response.sendRedirect("/login");
         }
     }
-
 }

@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package io.muic.ooc.webapp.service;
+package io.muic.ssc.webapp.service;
 
-import io.muic.ooc.webapp.model.User;
-import org.apache.commons.lang.StringUtils;
+import io.muic.ssc.webapp.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @author gigadot
- */
 public class SecurityService {
 
     private UserService userService;
@@ -24,7 +15,7 @@ public class SecurityService {
 
     public boolean isAuthorized(HttpServletRequest request) {
         String username = (String) request.getSession().getAttribute("username");
-        // do checking using user from the database
+        /* Do checking using username from the database. */
         return (username != null && userService.findByUsername(username) != null);
     }
 
@@ -41,5 +32,4 @@ public class SecurityService {
     public void logout(HttpServletRequest request) {
         request.getSession().invalidate();
     }
-
 }

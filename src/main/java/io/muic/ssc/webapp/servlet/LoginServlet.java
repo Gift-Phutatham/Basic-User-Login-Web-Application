@@ -1,18 +1,29 @@
-package io.muic.ooc.webapp.servlet;
+package io.muic.ssc.webapp.servlet;
 
-import io.muic.ooc.webapp.service.SecurityService;
-import java.io.IOException;
+import io.muic.ssc.webapp.Routable;
+import io.muic.ssc.webapp.service.SecurityService;
+import org.apache.commons.lang.StringUtils;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-import io.muic.ooc.webapp.Routable;
+import java.io.IOException;
 
 public class LoginServlet extends HttpServlet implements Routable {
 
     private SecurityService securityService;
+
+    @Override
+    public String getMapping() {
+        return "/login";
+    }
+
+    @Override
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,8 +33,7 @@ public class LoginServlet extends HttpServlet implements Routable {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // do login post logic
-        // extract username and password from request
+        /* Extract username and password from request. */
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
@@ -41,20 +51,5 @@ public class LoginServlet extends HttpServlet implements Routable {
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/login.jsp");
             rd.include(request, response);
         }
-
-        // check username and password against database
-        // if valid then set username attribute to session via securityService
-        // else put error message to render error on the login form
-
-    }
-
-    @Override
-    public String getMapping() {
-        return "/login";
-    }
-
-    @Override
-    public void setSecurityService(SecurityService securityService) {
-        this.securityService = securityService;
     }
 }

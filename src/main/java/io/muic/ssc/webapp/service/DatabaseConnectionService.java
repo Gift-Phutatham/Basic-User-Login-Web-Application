@@ -1,15 +1,12 @@
-package io.muic.ooc.webapp.service;
+package io.muic.ssc.webapp.service;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.muic.ooc.webapp.config.ConfigProperties;
-import io.muic.ooc.webapp.config.ConfigurationLoader;
+import io.muic.ssc.webapp.config.ConfigProperties;
+import io.muic.ssc.webapp.config.ConfigurationLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * We will make this singleton too.
- */
 public class DatabaseConnectionService {
 
     private final HikariDataSource ds;
@@ -43,5 +40,4 @@ public class DatabaseConnectionService {
         }
         return service;
     }
-
 }

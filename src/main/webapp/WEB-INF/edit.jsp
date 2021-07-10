@@ -44,7 +44,8 @@
                     <span class="input-group-text" id="displayName" style="width: 40px">
                         <i class="fa fa-user"></i>
                     </span>
-                    <input type="text" class="form-control" name="displayName" placeholder="Display Name" aria-label="displayName"
+                    <input type="text" class="form-control" name="displayName" placeholder="Display Name"
+                           aria-label="displayName"
                            aria-describedby="displayName" autocomplete="off" value="${displayName}">
                 </div>
                 <div class="d-grid gap-2">

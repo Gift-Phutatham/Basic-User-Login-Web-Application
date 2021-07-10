@@ -1,26 +1,21 @@
-package io.muic.ooc.webapp;
+package io.muic.ssc.webapp;
 
-import java.io.File;
-import javax.servlet.ServletException;
-
-import io.muic.ooc.webapp.service.DatabaseConnectionService;
-import io.muic.ooc.webapp.service.SecurityService;
-import io.muic.ooc.webapp.service.UserService;
-import io.muic.ooc.webapp.servlet.HomeServlet;
-import io.muic.ooc.webapp.servlet.LoginServlet;
+import io.muic.ssc.webapp.service.SecurityService;
+import io.muic.ssc.webapp.service.UserService;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
+import java.io.File;
+
 public class Webapp {
 
     public static void main(String[] args) {
-
         File docBase = new File("src/main/webapp/");
         docBase.mkdirs();
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(8082);
+        tomcat.setPort(8080);
 
         SecurityService securityService = new SecurityService();
         securityService.setUserService(UserService.getInstance());
@@ -33,7 +28,7 @@ public class Webapp {
             ctx = tomcat.addWebapp("", docBase.getAbsolutePath());
             servletRouter.init(ctx);
 
-            // customize error page for redirection
+            /* Customize error page for redirection. */
             ErrorPage error404Page = new ErrorPage();
             error404Page.setErrorCode(404);
             error404Page.setLocation("/WEB-INF/error404.jsp");
@@ -44,6 +39,5 @@ public class Webapp {
         } catch (LifecycleException ex) {
             ex.printStackTrace();
         }
-
     }
 }
